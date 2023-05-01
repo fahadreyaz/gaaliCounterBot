@@ -20,7 +20,7 @@ with open('words.txt', 'r') as f:
     for line in f.readlines():
         wordsDict[line.strip()] = 0
 
-if True:
+while True:
     try:
         notifications = reddit.inbox.unread(limit=None)
         for comment in notifications:
@@ -28,7 +28,6 @@ if True:
             if auth_user.name.lower() not in body:
                 continue
             
-    
             if 'self' in body:
                 target = comment.author
             else:
@@ -47,7 +46,6 @@ if True:
                     else:
                         target = comment.author
     
-            print(target)
             user_comments = target.comments.new(limit=800)
             comment_count = 0
             for user_comment in user_comments:
@@ -57,7 +55,6 @@ if True:
                     if word in list(wordsDict.keys()):
                         wordsDict[word]+=1
                 
-    
             for key in list(wordsDict.keys()):
                 if wordsDict[key] == 0:
                     del wordsDict[key]
@@ -69,10 +66,11 @@ if True:
                 for key in list(wordsDict.keys()):
                     stat_str+=f"| {key} | {wordsDict[key]} |\n"
 
-            
-            reply = intro_text + stat_str
+            link = "^([github](https://github.com/fahadreyaz/gaaliCounterBot))"
+            reply = intro_text + stat_str + link
             comment.reply(body=reply)
+            comment.mark_read()
             
     except Exception as e:
-        raise e
-        
+        print(e)
+        continue
