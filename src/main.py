@@ -45,6 +45,9 @@ while True:
                         target = reddit.comment(comment.parent_id).author
                     else:
                         target = comment.author
+
+            if target.name.lower() == auth_user.name.lower():
+                target = comment.author
     
             user_comments = target.comments.new(limit=800)
             comment_count = 0
@@ -62,11 +65,11 @@ while True:
             intro_text = f"Beep Boop! I am here to check hindi profanity usage of u/{target}\n\n"
             stat_str = f"Congratulations! You haven't used any hindi slangs in your recent {comment_count} comments"
             if not wordsDict == {}:
-                stat_str = f"Here's their apshabd usage from their last {comment_count} comments:\n\n| Word | Count |\n| --- | --- |\n"
+                stat_str = f"Here's their profanity usage from their last {comment_count} comments:\n\n| Word | Count |\n| --- | --- |\n"
                 for key in list(wordsDict.keys()):
                     stat_str+=f"| {key} | {wordsDict[key]} |\n"
 
-            link = "^([github](https://github.com/fahadreyaz/gaaliCounterBot))"
+            link = "\n\n^([github](https://github.com/fahadreyaz/gaaliCounterBot))"
             reply = intro_text + stat_str + link
             comment.reply(body=reply)
             comment.mark_read()
